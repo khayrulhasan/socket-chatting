@@ -19,16 +19,14 @@ app.get('/', (req, res) => {
 const developer = io.of('/developer');
 
 developer.on('connection', (socket)=>{
-    console.log(`user connected`);
+    
     
     socket.on('message', (msg)=>{
-        console.log(`message: ${msg}`);
         developer.emit('message', msg);
     });
 
 
     socket.on('disconnect', ()=>{
-        console.log("User disconnected");
         developer.emit('message', 'user disconnected');
     })
 });
