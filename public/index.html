@@ -24,7 +24,7 @@
             <form action="">
                 <div class="input-group">
                     <input type="text" class="form-control" id="m" aria-label="Example select with button addon"/>
-                    <button class="btn btn-outline-secondary" type="submit">Send</button>
+                    <button class="btn btn-primary" type="submit">Send</button>
                 </div>
             </form>
         </div>
@@ -35,16 +35,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js" integrity="sha512-MgkNs0gNdrnOM7k+0L+wgiRc5aLgl74sJQKbIWegVIMvVGPc1+gc1L2oK9Wf/D9pq58eqIJAxOonYPVE5UwUFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        const socket = io('/developer');
+        const room  = 'javascript';
+
+        const socket = io('/tech');
        
         $('form').submit(()=>{
-            socket.emit('message', $('#m').val());
+            let msg = $('#m').val();
+            socket.emit('message', {msg, room});
             $('#m').val('');
             return false;
         });
 
         socket.on('connect', ()=>{
-            socket.emit('message', 'user connected');
+            socket.emit('join', {room : room});
         });
 
         socket.on('message', (msg)=>{
